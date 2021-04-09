@@ -1,5 +1,8 @@
 // Chapter Four Exercises
 
+// credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
+const equals = (a, b) => { return a.length === b.length && a.every((element, index) => element === b[index]) };
+
 // write range fn - start & end inclussive
 // write sum (of array) fn
 // phase 2: add step param to range fn
@@ -30,9 +33,6 @@ console.log(testSumRange(1, 10, 55));
 console.log(testSumRange(-3, 0, -6));
 console.log(testSumRange(-3, -5, 0));
 
-// credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
-const equals = (a, b) => { return a.length === b.length && a.every((element, index) => element === b[index]) };
-
 const testRange = (start, end, expected) => { return equals(range(start,end),expected) };
 console.log(testRange(1,5,[1,2,3,4,5]));
 console.log(testRange(-3,0,[-3,-2,-1,0]));
@@ -61,31 +61,63 @@ console.log(testSum([6,10,-4], 12))
 // write reverseArray - returns new array
 // write reverseArrayInPlace - modify array passed as param
 // questions: which more useful? which faster?
-// this works
 const reverseArray = (someArray) => {
   let newArray = [];
   someArray.forEach(element => {
     newArray.unshift(element);
   });
-  console.log(someArray);
-  console.log(newArray);
   return newArray;
 };
 
-// TODO: this is broken
-const reversed = function(a, b) { 
-  let bLength = b.length;
-  return a.length === bLength && a.every((element, index) => element === b[bLength-index]);
+const reverseArrayInPlace = (someArray) => {
+  let lenArrayLessOne = someArray.length -1;
+  // prep the array for the reverse
+  for(let i = 0; i < lenArrayLessOne; i++) {
+    someArray.unshift(0);
+  }
+  for(let i = 0; i < lenArrayLessOne; i++) {
+    let lastElement = someArray.pop();
+    someArray[i] = lastElement;
+  }
+  return someArray;
 };
 
-const testReverseArray = (someArray) => { return reversed(reverseArray(someArray), someArray)};
-console.log(testReverseArray([1,3,5]));
-console.log(testReverseArray(['zeta',3.1415,'42',-94]));
+// performance
+const timeToExecute = (someArray, fnToExecute) => {
+  let startDate = new Date(); 
+  fnToExecute(someArray);
+  let endDate = new Date();  
+  return endDate.getTime() - startDate.getTime();
+}
+
+let thisArray = range(1,100000);
+console.log(timeToExecute(thisArray, reverseArray));        // 1002
+console.log(timeToExecute(thisArray, reverseArrayInPlace)); // 3231
+
+const testReverseArray = (someArray, expected) => { return equals(reverseArray(someArray), expected)};
+console.log(testReverseArray([1,3,5], [5,3,1]));
+console.log(testReverseArray(['zeta',3.1415,'42',-94], [-94,'42',3.1415,'zeta']));
+
+const testReverseArrayInPlace = (someArray, expected) => { return equals(reverseArrayInPlace(someArray), expected)};
+console.log(testReverseArrayInPlace([1,3,5], [5,3,1]));
+console.log(testReverseArrayInPlace(['zeta',3.1415,'42',-94], [-94,'42',3.1415,'zeta']));
+
+
+// write arrayToList
+// write listToArray
+// write prepend(element, list) - add element to front of list
+// write nth(index, list) - return element at index, or undefined
+// nth recursive if not yet
+const arrayToList = (someArray) => {
+  let aList = [];
+  let arrayLen = someArray.length;
+}
 
 
 
+// credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
+const equals = (a, b) => { return a.length === b.length && a.every((element, index) => element === b[index]) };
 
-// a list ...
 
 
 
