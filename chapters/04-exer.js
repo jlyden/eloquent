@@ -71,7 +71,7 @@ const reverseArray = (someArray) => {
 
 const reverseArrayInPlace = (someArray) => {
   let lenArrayLessOne = someArray.length -1;
-  // prep the array for the reverse
+  // prep the array for the reverse - add dummy values we will replace
   for(let i = 0; i < lenArrayLessOne; i++) {
     someArray.unshift(0);
   }
@@ -106,20 +106,50 @@ console.log(testReverseArrayInPlace(['zeta',3.1415,'42',-94], [-94,'42',3.1415,'
 // write arrayToList
 // write listToArray
 // write prepend(element, list) - add element to front of list
-// write nth(index, list) - return element at index, or undefined
+// write nth(list, index) - return element at index, or undefined
 // nth recursive if not yet
 const arrayToList = (someArray) => {
-  let aList = [];
-  let arrayLen = someArray.length;
+  let aList = null;
+  while(someArray.length) {
+    lastElement = someArray.pop();
+    aList = prepend(lastElement, aList);
+  }
+  return aList;
 }
 
+const prepend = (element, existingList) => {
+  return {
+    value: element,
+    rest: existingList
+  };
+}
 
+const listToArray = (someList) => {
+  let newArray = [];
+  while(someList) {
+    newArray.push(someList.value);
+    someList = someList.rest;
+  }
+  return newArray;
+}
 
-// credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
-const equals = (a, b) => { return a.length === b.length && a.every((element, index) => element === b[index]) };
+const nth = (someList, index, counter = 0) => {
+	if(counter == index) {
+    return someList.value;
+  } else {
+  	counter++;
+    return someList.rest
+      ? nth(someList.rest, index, counter)
+      : undefined;
+  }
+}
 
-
-
+let newList = arrayToList(['a','b','c','d']);
+console.log(newList);
+console.log(listToArray(newList));
+console.log(nth(newList, 1));
 
 
 // deep comparison ...
+// credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
+const equals = (a, b) => { return a.length === b.length && a.every((element, index) => element === b[index]) };
