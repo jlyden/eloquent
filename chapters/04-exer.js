@@ -8,7 +8,7 @@ function arrayEquals(a, b) {
 // write range fn - start & end inclussive
 // write sum (of array) fn
 // phase 2: add step param to range fn
-const range = (start, end, step = 1) => {
+function range(start, end, step = 1) {
   // If step is positive, start must be smaller than end; if step negative, end smaller than start 
   if((step > 0 && start > end) || (step < 0 && start < end)) {
     return [];
@@ -22,7 +22,7 @@ const range = (start, end, step = 1) => {
   return rangeToReturn;
 };
 
-const sum = (intArray) => {
+function sum(intArray) {
   let total = 0;
   intArray.forEach(element => {
     total += element;
@@ -63,44 +63,44 @@ const testSum = (intArray, expected) => { return sum(intArray) == expected };
 // write reverseArray - returns new array
 // write reverseArrayInPlace - modify array passed as param
 // questions: which more useful? which faster?
-const reverseArray = (someArray) => {
+const reverseArray = (arrayToReverse) => {
   let newArray = [];
-  someArray.forEach(element => {
+  arrayToReverse.forEach(element => {
     newArray.unshift(element);
   });
   return newArray;
 };
 
-const reverseArrayInPlace = (someArray) => {
-  let lenArrayLessOne = someArray.length -1;
+const reverseArrayInPlace = (arrayToReverseInPlace) => {
+  let lenArrayLessOne = arrayToReverseInPlace.length -1;
   // prep the array for the reverse - add dummy values we will replace
   for(let i = 0; i < lenArrayLessOne; i++) {
-    someArray.unshift(0);
+    arrayToReverseInPlace.unshift(0);
   }
   for(let i = 0; i < lenArrayLessOne; i++) {
-    let lastElement = someArray.pop();
-    someArray[i] = lastElement;
+    let lastElement = arrayToReverseInPlace.pop();
+    arrayToReverseInPlace[i] = lastElement;
   }
-  return someArray;
+  return arrayToReverseInPlace;
 };
 
 // performance
-const timeToExecute = (someArray, fnToExecute) => {
+const timeToExecute = (testArray, fnToExecute) => {
   let startDate = new Date(); 
-  fnToExecute(someArray);
+  fnToExecute(testArray);
   let endDate = new Date();  
   return endDate.getTime() - startDate.getTime();
 }
 
 let thisArray = range(1,100000);
-//console.log(timeToExecute(thisArray, reverseArray));        // 1002
-//console.log(timeToExecute(thisArray, reverseArrayInPlace)); // 3231
+//console.log(timeToExecute(thisArray, reverseArray));        // 1002 // 2094
+//console.log(timeToExecute(thisArray, reverseArrayInPlace)); // 3231 // 6252
 
-const testReverseArray = (someArray, expected) => { return arrayEquals(reverseArray(someArray), expected); }
+const testReverseArray = (arrayToReverse, expected) => { return arrayEquals(reverseArray(arrayToReverse), expected); }
 //console.log(testReverseArray([1,3,5], [5,3,1]));
 //console.log(testReverseArray(['zeta',3.1415,'42',-94], [-94,'42',3.1415,'zeta']));
 
-const testReverseArrayInPlace = (someArray, expected) => { return arrayEquals(reverseArrayInPlace(someArray), expected); }
+const testReverseArrayInPlace = (arrayToReverseInPlace, expected) => { return arrayEquals(reverseArrayInPlace(arrayToReverseInPlace), expected); }
 //console.log(testReverseArrayInPlace([1,3,5], [5,3,1]));
 //console.log(testReverseArrayInPlace(['zeta',3.1415,'42',-94], [-94,'42',3.1415,'zeta']));
 
@@ -110,23 +110,25 @@ const testReverseArrayInPlace = (someArray, expected) => { return arrayEquals(re
 // write prepend(element, list) - add element to front of list
 // write nth(list, index) - return element at index, or undefined
 // nth recursive if not yet
-const arrayToList = (someArray) => {
+function arrayToList(arrayToMakeList) {
+  if(!arrayToMakeList) {
+    return {};
+  }
   let aList = null;
-  while(someArray.length) {
-    lastElement = someArray.pop();
+  while(arrayToMakeList.length) {
+    lastElement = arrayToMakeList.pop();
     aList = prepend(lastElement, aList);
   }
   return aList;
 }
 
-const prepend = (element, existingList) => {
+function prepend(element, existingList) {
   return {
     value: element,
     rest: existingList
   };
 }
 
-const testArrayToList = (someArray, expected) => { return deepEquals(arrayToList(someArray),expected); }
 let arrayABC = ['a','b','c'];
 let listOfThreeResult = {
   value: 'a',
@@ -138,15 +140,18 @@ let listOfThreeResult = {
     }
   }
 };
-console.log(arrayToList(arrayABC));
-console.log(testArrayToList(arrayToList(arrayABC),listOfThreeResult));
+
+//console.log(arrayToList(arrayABC));
+//console.log(listOfThreeResult);
+
 let arraySingle = [1];
 let listOfArraySingleResult = {
   value: 1,
   rest: null
 };
-console.log(arrayToList(arraySingle));
-console.log(testArrayToList(arrayToList(arraySingle),listOfArraySingleResult));
+
+//console.log(arrayToList(arraySingle));
+//console.log(listOfArraySingleResult);
 
 const listToArray = (someList) => {
   let newArray = [];
@@ -158,8 +163,8 @@ const listToArray = (someList) => {
 }
 
 const testListToArray = (someList, expected) => { return arrayEquals(listToArray(someList), expected); }
-console.log(testListToArray(listOfThreeResult,arrayABC));
-console.log(testListToArray(listOfArraySingleResult,arraySingle));
+//console.log(testListToArray(listOfThreeResult,arrayABC));
+//console.log(testListToArray(listOfArraySingleResult,arraySingle));
 
 const nth = (someList, index, counter = 0) => {
 	if(counter == index) {
@@ -182,12 +187,19 @@ let listOfThree = arrayToList(['a','c','d']);
 // use typeof to see if objects (make sure values not null)
 // use Object.keys() to help recurse through properties
 function deepEquals(a,b) {
+  console.log(`entering: ${a} | ${b}`);
+  // handle nulls
+  if(a === null || b === null) {
+    console.log('nulls');
+    return a === b;
+  }
   // handle different types
   if(typeof a !== typeof b) {
     return false;
   }
-  // handle nulls and primitves
-  if(a === null || typeof a != 'object') {
+  // handle primitves
+  if(typeof a != 'object') {
+    console.log(`primitives: ${a} | ${b}`);
     return a === b;
   }
   // objects - if different keys, !equal
@@ -196,6 +208,7 @@ function deepEquals(a,b) {
   } 
   // loop through keys, comparing values
   return Object.keys(a).every(key => {
+    console.log(`key: ${a[key]} and ${b[key]}`);
   	return deepEquals(a[key],b[key]); 
   });
 }
