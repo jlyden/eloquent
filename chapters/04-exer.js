@@ -1,14 +1,14 @@
 // Chapter Four Exercises
 
 // credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
-function arrayEquals(a, b) { 
+export function arrayEquals(a, b) { 
   return a.length === b.length && a.every((element, index) => element === b[index]);
 }
 
 // write range fn - start & end inclussive
 // write sum (of array) fn
 // phase 2: add step param to range fn
-function range(start, end, step = 1) {
+export function range(start, end, step = 1) {
   // If step is positive, start must be smaller than end; if step negative, end smaller than start 
   if((step > 0 && start > end) || (step < 0 && start < end)) {
     return [];
