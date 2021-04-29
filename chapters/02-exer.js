@@ -1,4 +1,4 @@
-// Chapter Two Exercises
+/* Chapter Two Exercises */
 
 // mountain: 7 levels, 7 max width
 for(let row = 0; row < 7; row++) {

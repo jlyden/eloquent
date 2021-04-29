@@ -1,4 +1,4 @@
-// Chapter Four Exercises
+/* Chapter Four Exercises */
 
 // credit: https://www.30secondsofcode.org/blog/s/javascript-array-comparison
 export function arrayEquals(a, b) { 
@@ -20,7 +20,7 @@ export function range(start, end, step = 1) {
     counter += step;
   }
   return rangeToReturn;
-};
+}
 
 function sum(intArray) {
   let total = 0;
@@ -116,6 +116,7 @@ function arrayToList(arrayToMakeList) {
   }
   let aList = null;
   while(arrayToMakeList.length) {
+    let lastElement;
     lastElement = arrayToMakeList.pop();
     aList = prepend(lastElement, aList);
   }
@@ -141,17 +142,11 @@ let listOfThreeResult = {
   }
 };
 
-//console.log(arrayToList(arrayABC));
-//console.log(listOfThreeResult);
-
 let arraySingle = [1];
 let listOfArraySingleResult = {
   value: 1,
   rest: null
 };
-
-//console.log(arrayToList(arraySingle));
-//console.log(listOfArraySingleResult);
 
 const listToArray = (someList) => {
   let newArray = [];
@@ -187,10 +182,8 @@ let listOfThree = arrayToList(['a','c','d']);
 // use typeof to see if objects (make sure values not null)
 // use Object.keys() to help recurse through properties
 function deepEquals(a,b) {
-  console.log(`entering: ${a} | ${b}`);
   // handle nulls
   if(a === null || b === null) {
-    console.log('nulls');
     return a === b;
   }
   // handle different types
@@ -199,7 +192,6 @@ function deepEquals(a,b) {
   }
   // handle primitves
   if(typeof a != 'object') {
-    console.log(`primitives: ${a} | ${b}`);
     return a === b;
   }
   // objects - if different keys, !equal
@@ -208,7 +200,6 @@ function deepEquals(a,b) {
   } 
   // loop through keys, comparing values
   return Object.keys(a).every(key => {
-    console.log(`key: ${a[key]} and ${b[key]}`);
   	return deepEquals(a[key],b[key]); 
   });
 }
@@ -230,5 +221,5 @@ let listSameOfFour = arrayToList(['a','b','c','d']);
 //console.log(testDeepEquals(objOneKey,objDiffKey,false));
 //console.log(testDeepEquals(objOneKey,objTwoKeys,false));
 //console.log(testDeepEquals(objOneKey,objSame,true));
-//console.log(testDeepEquals(listOfFour, listOfThree,false));
-//console.log(testDeepEquals(listOfFour, listSameOfFour,true));
+//console.log(testDeepEquals(listOfFour,listOfThree,false));
+//console.log(testDeepEquals(listOfFour,listSameOfFour,true));

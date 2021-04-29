@@ -1,4 +1,4 @@
-// Chapter Three Exercises
+/* Chapter Three Exercises */
 
 // rewrite Math.min
 const min = (x,y) => { return x < y ? x : y };
@@ -111,9 +111,9 @@ console.log(testCountChar("fleet", "E", 0));
 console.log(testCountChar("float", 5, 0));
 console.log(testCountChar(654, "c", 0));
 
-const countBs = (text) => { return countChar(text, 'B') };
-const testCountBs = (text, expected) => { return countBs(text) == expected };
-console.log(testCountBs("Bubble", 1));
-console.log(testCountBs("BuBBle", 3));
-console.log(testCountBs("float", 0));
-console.log(testCountBs(654, 0));
+const countBs2 = (text) => { return countChar(text, 'B') };
+const testCountBs2 = (text, expected) => { return countBs2(text) == expected };
+console.log(testCountBs2("Bubble", 1));
+console.log(testCountBs2("BuBBle", 3));
+console.log(testCountBs2("float", 0));
+console.log(testCountBs2(654, 0));
