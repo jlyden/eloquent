@@ -1,4 +1,5 @@
 import { range, arrayEquals } from './04-exer.mjs';
+import { SCRIPTS } from './scripts.mjs';
 
 /* Chapter Five Exercises */
 
@@ -82,10 +83,52 @@ function everythingSome(someArray, testFunction) {
 const testEverythingSome = (someArray, testFunction, expected) => { return everythingSome(someArray, testFunction) == expected; }
 const arrayOneToFiveCopy = arrayOneToFive.slice();
 //console.log(testEverythingSome(arrayOneToFive, lessThanFive, false));
-console.log(everythingSome(arrayOneToFiveCopy, lessThanTen));
+//console.log(everythingSome(arrayOneToFiveCopy, lessThanTen));
 //console.log(testEverythingSome(arrayOneToFiveCopy, lessThanTen, true));
-
 
 // dominant writing direction
 // dom.dir is dir of majority of chars (in script)
 // can use characterScript and countBy fns
+// ref: https://eloquentjavascript.net/05_higher_order.html#c_nau/OQcf6J
+function countBy(items, groupName) {
+  let counts = [];
+  for (let item of items) {
+    let name = groupName(item);
+    let known = counts.findIndex(c => c.name == name);
+    if (known == -1) {
+      counts.push({name, count: 1});
+    } else {
+      counts[known].count++;
+    }
+  }
+  return counts;
+}
+// ref: https://eloquentjavascript.net/05_higher_order.html#p_aEEZgRpp75
+function characterScript(code) {
+  for (let script of SCRIPTS) {
+    if (script.ranges.some(([from, to]) => {
+      return code >= from && code < to;
+    })) {
+      return script;
+    }
+  }
+  return null;
+}
+
+function dominantDirection(text) {
+  let directions = countBy(text, char => {
+    let script = characterScript(char.codePointAt(0));
+    return script ? script.direction : 'none';
+  }).filter(({direction}) => direction != 'none');
+  console.log(JSON.stringify(directions));
+
+  let domDirection = directions.reduce((acc, cur) => {
+    return acc.count > cur.count ? acc : cur;
+  });
+
+  return domDirection.name;
+}
+
+const testDominantDirection = (string, expected) => { return dominantDirection(string) == expected; }
+console.log(testDominantDirection('Hello!', 'ltr'));
+console.log(testDominantDirection("Hey, مساء الخير", 'rtl'));
